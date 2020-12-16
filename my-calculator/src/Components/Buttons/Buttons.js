@@ -16,7 +16,15 @@ class Buttons extends Component {
         
         case '*': return Number(firstNum)*Number(secondNum);
         
-        case '/': return Number(firstNum)/Number(secondNum);
+        case '/': if (Number(secondNum)!==0) {
+          return Number(firstNum)/Number(secondNum);
+        } else {
+          return '';
+        }
+       
+        case '^': return Math.pow(Number(firstNum),Number(secondNum));
+
+        case 'sqrt': return Math.sqrt(Number(firstNum));
         
         default:
           break;
@@ -43,11 +51,49 @@ class Buttons extends Component {
           this.operationSign = '';
           
       }
-      if (number==='+' || number==='-' || number==='*' || number==='/') {
+      if ( number==='sqrt') {
+        this.operationSign = 'sqrt';
+        this.showValue = operation(this.firstNumber, this.secondNumber, this.operationSign);
+        this.firstNumber = this.showValue;
+        this.secondNumber = '';
+                
+    }
+      if (number==='+' || number==='-' || number==='*' || number==='/' || number==='^') {
         this.operationSign = number;
         this.showValue = this.operationSign;
      }
+     if (number==='C') {
+      this.firstNumber = '';
+      this.secondNumber = '';
+      this.operationSign = '';
+      this.showValue = '';
+   }
+   if (number==='+/-') {
+      this.showValue =Number(this.showValue)*(-1);
+    if (!this.operationSign) {
+      this.firstNumber = this.showValue;
+    } else {
+      this.secondNumber = this.showValue;
     }
+  
+ }
+
+     if (number === '.') {
+    
+      if (!this.operationSign && this.firstNumber.indexOf('.')===-1) {
+        console.log(this.firstNumber.indexOf('.'));
+        this.firstNumber += String(number);
+        this.showValue = this.firstNumber;
+      } else {
+        if (this.operationSign && this.secondNumber.indexOf('.')===-1){
+        console.log('zakonsolim vse tut naher part 2');
+        console.log(this.secondNumber.indexOf('.'));
+        this.secondNumber += String(number);
+        this.showValue = this.secondNumber;
+        }
+      }
+    }
+   }
 
           
       /* if (number==='=') {
@@ -68,24 +114,28 @@ class Buttons extends Component {
       <>
        {trickyInput}
       <div>
+          <button onClick={() => handleClick('.')}>.</button>
           <button onClick={() => handleClick(1)}>1</button>
           <button onClick={() => handleClick(2)}>2</button>
           <button onClick={() => handleClick(3)}>3</button>
           <button onClick={() => handleClick('+')}>+</button>
       </div>
         <div>
+        <button onClick={() => handleClick('^')}>^</button>
         <button onClick={() => handleClick(4)}>4</button>
         <button onClick={() => handleClick(5)}>5</button>
         <button onClick={() => handleClick(6)}>6</button>
         <button onClick={() => handleClick('-')}>-</button>
     </div>
        <div>
+       <button onClick={() => handleClick('sqrt')}>sqrt</button>
        <button onClick={() => handleClick(7)}>7</button>
        <button onClick={() => handleClick(8)}>8</button>
        <button onClick={() => handleClick(9)}>9</button>
        <button onClick={() => handleClick('*')}>*</button>
    </div>
      <div>
+     <button onClick={() => handleClick('+/-')}>+/-</button>
      <button onClick={() => handleClick(0)}>0</button>
      <button onClick={() => handleClick('=')}>=</button>
      <button onClick={() => handleClick('C')}>C</button>
