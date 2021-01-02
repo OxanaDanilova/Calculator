@@ -5,36 +5,50 @@ class Buttons extends Component {
   secondNumber='';
   operationSign = '';
   showValue = '';
+  prevOperand = '';
 
   render(){
 
     const operation = (firstNum, secondNum, operationSign )=> {
+      let result = 0;
       switch (operationSign) {
-        case '+': return  Number(firstNum)+Number(secondNum);
+        case '+': result =  Number(firstNum)+Number(secondNum);
+                  break;
         
-        case '-': return Number(firstNum)-Number(secondNum);
+        case '-': result = Number(firstNum)-Number(secondNum);
+        break;
         
-        case '*': return Number(firstNum)*Number(secondNum);
+        case '*': result = Number(firstNum)*Number(secondNum);
+        break;
         
         case '/': if (Number(secondNum)!==0) {
-          return Number(firstNum)/Number(secondNum);
+          result = Number(firstNum)/Number(secondNum);
         } else {
-          return '';
+          result = '';
         }
+        break;
        
-        case '^': return Math.pow(Number(firstNum),Number(secondNum));
+        case '^': result = Math.pow(Number(firstNum),Number(secondNum));
+        break;
 
-        case 'sqrt': return Math.sqrt(Number(firstNum));
+        case 'sqrt': if (firstNum>=0) {
+          result = Math.sqrt(Number(firstNum));}
+          else {
+            alert('Should be positiv number');
+            result = '';
+          };       
+          break;
         
         default:
           break;
       }
+      return Math.round(result*10000000)/10000000;
      };
 
     let trickyInput = <input type='text' placeholder='input the numbers' readOnly></input>;
+    let memoryDisplay = <div className = 'memory-res'></div>;
     const handleClick = (number) => {
-      console.log('type of number', typeof number);
-      if (typeof number === 'number') {
+        if (typeof number === 'number') {
         if (!this.operationSign) {
           this.firstNumber += String(number);
           this.showValue = this.firstNumber;
@@ -44,7 +58,7 @@ class Buttons extends Component {
         }
       } else {
 
-        if ((number==='=') && (this.operationSign)) {
+        if ((number==='=' || number==='+' || number==='-' || number==='*' || number==='/' || number==='^' || number==='sqrt' ) && this.operationSign && this.firstNumber) {
           this.showValue = operation(this.firstNumber, this.secondNumber, this.operationSign);
           this.firstNumber = this.showValue;
           this.secondNumber = '';
@@ -86,21 +100,12 @@ class Buttons extends Component {
         this.showValue = this.firstNumber;
       } else {
         if (this.operationSign && this.secondNumber.indexOf('.')===-1){
-        console.log('zakonsolim vse tut naher part 2');
-        console.log(this.secondNumber.indexOf('.'));
         this.secondNumber += String(number);
         this.showValue = this.secondNumber;
         }
       }
     }
    }
-
-          
-      /* if (number==='=') {
-        this.result = this.number;
-        this.number = this.result;
-        this.operationSign = '='
-      } */
           const input = document.getElementsByTagName('input')[0];
           input.value = this.showValue;
           trickyInput = <input type='text' placeholder='input the numbers' readOnly value={this.showValue}></input>
@@ -108,40 +113,48 @@ class Buttons extends Component {
           console.log('first', this.firstNumber);
           console.log('second', this.secondNumber);
           console.log('operationSign', this.operationSign);
+
+          this.prevOperand = String(this.firstNumber+this.operationSign);
+          console.log('hint', this.prevOperand);
+          memoryDisplay = <div className = 'memory-res'>{this.prevOperand}</div>;
+          console.log(memoryDisplay);
+          
                
     }
+  
+    
     return (
-      <>
+      <div className='panel'>
        {trickyInput}
-      <div>
-          <button onClick={() => handleClick('.')}>.</button>
+       {memoryDisplay}
+       
+       <div className = 'calculator-grid'>
+          <button className = 'operation-btn' onClick={() => handleClick('C')}>C</button>
           <button onClick={() => handleClick(1)}>1</button>
           <button onClick={() => handleClick(2)}>2</button>
           <button onClick={() => handleClick(3)}>3</button>
-          <button onClick={() => handleClick('+')}>+</button>
-      </div>
-        <div>
-        <button onClick={() => handleClick('^')}>^</button>
+          <button className = 'operation-btn' onClick={() => handleClick('+')}>+</button>
+      
+        <button className = 'operation-btn' onClick={() => handleClick('^')}>^</button>
         <button onClick={() => handleClick(4)}>4</button>
         <button onClick={() => handleClick(5)}>5</button>
         <button onClick={() => handleClick(6)}>6</button>
-        <button onClick={() => handleClick('-')}>-</button>
-    </div>
-       <div>
-       <button onClick={() => handleClick('sqrt')}>sqrt</button>
+        <button className = 'operation-btn' onClick={() => handleClick('-')}>-</button>
+  
+       <button className = 'operation-btn' onClick={() => handleClick('sqrt')}>sqrt</button>
        <button onClick={() => handleClick(7)}>7</button>
        <button onClick={() => handleClick(8)}>8</button>
        <button onClick={() => handleClick(9)}>9</button>
-       <button onClick={() => handleClick('*')}>*</button>
-   </div>
-     <div>
-     <button onClick={() => handleClick('+/-')}>+/-</button>
+       <button className = 'operation-btn' onClick={() => handleClick('*')}>*</button>
+   
+     <button className = 'operation-btn' onClick={() => handleClick('+/-')}>+/-</button>
      <button onClick={() => handleClick(0)}>0</button>
      <button onClick={() => handleClick('=')}>=</button>
-     <button onClick={() => handleClick('C')}>C</button>
-     <button onClick={() => handleClick('/')}>/</button>
-  </div>  
-  </>
+     <button onClick={() => handleClick('.')}>.</button>
+     <button className = 'operation-btn' onClick={() => handleClick('/')}>/</button>
+   </div>
+  </div>
+ 
   )
   }
      
