@@ -1,5 +1,10 @@
 .panel {
     background-image: linear-gradient(to right, rgb(89 107 101), rgb(114 117 116));
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+    min-height: 100vh;
 
 }
 
@@ -19,13 +24,18 @@ input {
     height: 3rem;
     font-size: 2rem;
     padding: 0.3rem;
-    border-radius:5px;
+    border-radius:10px;
+    text-align: center;
 }
 
 .memory-res {
-    height: 45px;
-    length:45px;
+    height: 4rem;
+    width: 20rem;
     background-color:darkseagreen;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    font-size: 1.2rem;
 
 }
 
@@ -33,9 +43,9 @@ input {
     display: grid;
     justify-content: center;
     align-content: center;
-    min-height: 100vh;
     grid-template-columns: repeat(5, 100px);
     grid-template-rows: minmax(120px, auto) repeat(4, 100px);
+    margin: 20px;
 }
 
 .operation-btn {
