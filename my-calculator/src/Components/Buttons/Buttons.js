@@ -37,7 +37,6 @@ class Buttons extends Component {
           }
           break;
         default:
-          alert("Sehr gut");
           break;
       }
     };
@@ -66,7 +65,7 @@ class Buttons extends Component {
           break;
 
         case "^":
-          result = Math.pow(Number(firstNum), 2);
+          result = Math.pow(Number(firstNum), Number(secondNum));
           break;
 
         case "sqrt":
@@ -89,6 +88,7 @@ class Buttons extends Component {
         type="text"
         placeholder="input the numbers"
         readOnly
+        autoFocus
         onKeyDown={keyHandler}
       ></input>
     );
@@ -135,7 +135,7 @@ class Buttons extends Component {
           this.prevOperand = String(this.firstNumber + this.operationSign);
           memoryDisplayElement.innerHTML = this.prevOperand;
         }
-        if (number === "sqrt" || number === "^") {
+        if (number === "sqrt") {
           this.operationSign = number;
           this.showValue = operation(
             this.firstNumber,
@@ -150,7 +150,8 @@ class Buttons extends Component {
           number === "+" ||
           number === "-" ||
           number === "*" ||
-          number === "/"
+          number === "/" ||
+          number === '^'
         ) {
           this.operationSign = number;
           this.showValue = this.operationSign;
@@ -192,6 +193,7 @@ class Buttons extends Component {
           type="text"
           placeholder="input the numbers"
           readOnly
+          autoFocus
           value={this.showValue}
         ></input>
       );
@@ -215,8 +217,8 @@ class Buttons extends Component {
           <button className="operation-btn" onClick={() => handleClick("+")}>
             +
           </button>
-          <button className="operation-btn" onClick={() => handleClick("^")}>
-            X²{" "}
+          <button className="operation-btn pow" onClick={() => handleClick("^")}>
+            
           </button>{" "}
           <button onClick={() => handleClick(4)}> 4 </button>{" "}
           <button onClick={() => handleClick(5)}> 5 </button>{" "}
@@ -228,8 +230,8 @@ class Buttons extends Component {
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="icon icon-tabler icon-tabler-math"
-              width="24"
-              height="24"
+              width="40"
+              height="40"
               viewBox="0 0 24 24"
               strokeWidth="2"
               stroke="currentColor"

@@ -51,3 +51,12 @@ input {
 .operation-btn {
     background-color:darkseagreen;
 }
+
+.pow {
+    background-image: url(./images/squareNum.png);
+    background-position: center;
+    background-size: 2.5rem;
+    background-color: darkseagreen;
+    background-repeat: no-repeat;
+    background-blend-mode: multiply;
+}
