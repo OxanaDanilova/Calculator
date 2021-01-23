@@ -6,6 +6,7 @@ class Buttons extends Component {
   operationSign = "";
   showValue = "";
   prevOperand = "";
+  isEqualSign = false;
 
   render() {
     const keyHandler = (event) => {
@@ -98,11 +99,11 @@ class Buttons extends Component {
         "memory-res"
       )[0];
       if (typeof number === "number") {
-        if (this.operationSign === "=") {
-          console.log("number", number);
+        if (this.isEqualSign === true && !this.secondNumber) {
+          console.log("number-bamber", number);
           this.firstNumber = String(number);
           this.showValue = this.firstNumber;
-          this.operationSign = "";
+          this.isEqualSign = false;
         } else {
           if (!this.operationSign) {
             this.firstNumber += String(number);
@@ -129,6 +130,12 @@ class Buttons extends Component {
             this.secondNumber,
             this.operationSign
           );
+          if (number === '='){
+            this.isEqualSign = true;
+          } else {
+            this.isEqualSign = false;
+            
+          }
           this.firstNumber = this.showValue;
           this.secondNumber = "";
           this.operationSign = "";
@@ -151,10 +158,11 @@ class Buttons extends Component {
           number === "-" ||
           number === "*" ||
           number === "/" ||
-          number === '^'
+          number === "^"
         ) {
           this.operationSign = number;
           this.showValue = this.operationSign;
+          this.isEqualSign = false;
           this.prevOperand = String(this.firstNumber + this.operationSign);
           memoryDisplayElement.innerHTML = this.prevOperand;
         }
@@ -162,6 +170,7 @@ class Buttons extends Component {
           this.firstNumber = "";
           this.secondNumber = "";
           this.operationSign = "";
+          this.isEqualSign = false;
           this.showValue = "";
           memoryDisplayElement.innerHTML = "";
         }
@@ -185,6 +194,28 @@ class Buttons extends Component {
             }
           }
         }
+        if (number === "Del") {
+      if (this.showValue) {       
+        this.showValue = String(this.showValue);
+        if (!this.operationSign) {
+          this.showValue = this.showValue.substr(0, this.showValue.length-1);
+          this.firstNumber = (+this.showValue===0)?'':+this.showValue;
+        } else {
+          if (this.showValue ==='+' || this.showValue ==='-' || this.showValue ==='*' || this.showValue ==='/' || this.showValue ==='^'){
+            this.showValue = this.showValue.substr(0, this.showValue.length-1);
+            this.operationSign = this.showValue;
+          } else {
+            this.showValue = this.showValue.substr(0, this.showValue.length-1);
+            this.secondNumber = (+this.showValue===0)?'':+this.showValue;
+          }
+        }
+        
+      }
+       
+      console.log('this.showValue.length', this.showValue.length);
+      console.log('this.showValue', this.showValue);
+      
+        }
       }
       const input = document.getElementsByTagName("input")[0];
       input.value = this.showValue;
@@ -201,28 +232,34 @@ class Buttons extends Component {
       console.log("first", this.firstNumber);
       console.log("second", this.secondNumber);
       console.log("operationSign", this.operationSign);
+      console.log('isEqualSign', this.isEqualSign);
     };
 
     return (
       <div className="panel">
-        {" "}
-        {trickyInput} {memoryDisplay}
+        <div>
+          {trickyInput}
+          <button onClick={() => handleClick('Del')}>Del</button>
+          </div>
+        
+         {memoryDisplay}
         <div className="calculator-grid">
           <button className="operation-btn" onClick={() => handleClick("C")}>
-            C{" "}
-          </button>{" "}
-          <button onClick={() => handleClick(1)}> 1 </button>{" "}
-          <button onClick={() => handleClick(2)}> 2 </button>{" "}
-          <button onClick={() => handleClick(3)}> 3 </button>{" "}
+            C
+          </button>
+          <button onClick={() => handleClick(1)}> 1 </button>
+          <button onClick={() => handleClick(2)}> 2 </button>
+          <button onClick={() => handleClick(3)}> 3 </button>
           <button className="operation-btn" onClick={() => handleClick("+")}>
             +
           </button>
-          <button className="operation-btn pow" onClick={() => handleClick("^")}>
-            
-          </button>{" "}
-          <button onClick={() => handleClick(4)}> 4 </button>{" "}
-          <button onClick={() => handleClick(5)}> 5 </button>{" "}
-          <button onClick={() => handleClick(6)}> 6 </button>{" "}
+          <button
+            className="operation-btn pow"
+            onClick={() => handleClick("^")}
+          ></button>
+          <button onClick={() => handleClick(4)}> 4 </button>
+          <button onClick={() => handleClick(5)}> 5 </button>
+          <button onClick={() => handleClick(6)}> 6 </button>
           <button className="operation-btn" onClick={() => handleClick("-")}>
             -
           </button>
@@ -242,24 +279,24 @@ class Buttons extends Component {
               <path stroke="none" d="M0 0h24v24H0z" />
               <path d="M16 13l4 4m0 -4l-4 4" />
               <path d="M20 5h-7l-4 14l-3 -6h-2" />
-            </svg>{" "}
-          </button>{" "}
-          <button onClick={() => handleClick(7)}> 7 </button>{" "}
-          <button onClick={() => handleClick(8)}> 8 </button>{" "}
-          <button onClick={() => handleClick(9)}> 9 </button>{" "}
+            </svg>
+          </button>
+          <button onClick={() => handleClick(7)}> 7 </button>
+          <button onClick={() => handleClick(8)}> 8 </button>
+          <button onClick={() => handleClick(9)}> 9 </button>
           <button className="operation-btn" onClick={() => handleClick("*")}>
             *
           </button>
           <button className="operation-btn" onClick={() => handleClick("+/-")}>
-            +/-{" "}
-          </button>{" "}
-          <button onClick={() => handleClick(0)}> 0 </button>{" "}
-          <button onClick={() => handleClick("=")}>= </button>{" "}
-          <button onClick={() => handleClick(".")}> . </button>{" "}
+            +/-
+          </button>
+          <button onClick={() => handleClick(0)}> 0 </button>
+          <button onClick={() => handleClick("=")}>= </button>
+          <button onClick={() => handleClick(".")}> . </button>
           <button className="operation-btn" onClick={() => handleClick("/")}>
-            /{" "}
-          </button>{" "}
-        </div>{" "}
+            /
+          </button>
+        </div>
       </div>
     );
   }
