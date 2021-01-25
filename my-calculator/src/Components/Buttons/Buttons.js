@@ -12,8 +12,6 @@ class Buttons extends Component {
     const keyHandler = (event) => {
       const regexp = /\d?\+?-?\*?\/?,?/;
       let result = event.key.match(regexp) || [];
-      console.log("result", result);
-      console.log("event.key", event.key);
       switch (event.key) {
         case "Enter":
           handleClick("=");
@@ -100,7 +98,6 @@ class Buttons extends Component {
       )[0];
       if (typeof number === "number") {
         if (this.isEqualSign === true && !this.secondNumber) {
-          console.log("number-bamber", number);
           this.firstNumber = String(number);
           this.showValue = this.firstNumber;
           this.isEqualSign = false;
@@ -130,11 +127,10 @@ class Buttons extends Component {
             this.secondNumber,
             this.operationSign
           );
-          if (number === '='){
+          if (number === "=") {
             this.isEqualSign = true;
           } else {
             this.isEqualSign = false;
-            
           }
           this.firstNumber = this.showValue;
           this.secondNumber = "";
@@ -154,11 +150,12 @@ class Buttons extends Component {
           this.operationSign = "";
         }
         if (
-          number === "+" ||
-          number === "-" ||
-          number === "*" ||
-          number === "/" ||
-          number === "^"
+          (number === "+" ||
+            number === "-" ||
+            number === "*" ||
+            number === "/" ||
+            number === "^") &&
+          this.firstNumber
         ) {
           this.operationSign = number;
           this.showValue = this.operationSign;
@@ -195,26 +192,37 @@ class Buttons extends Component {
           }
         }
         if (number === "Del") {
-      if (this.showValue) {       
-        this.showValue = String(this.showValue);
-        if (!this.operationSign) {
-          this.showValue = this.showValue.substr(0, this.showValue.length-1);
-          this.firstNumber = (+this.showValue===0)?'':+this.showValue;
-        } else {
-          if (this.showValue ==='+' || this.showValue ==='-' || this.showValue ==='*' || this.showValue ==='/' || this.showValue ==='^'){
-            this.showValue = this.showValue.substr(0, this.showValue.length-1);
-            this.operationSign = this.showValue;
-          } else {
-            this.showValue = this.showValue.substr(0, this.showValue.length-1);
-            this.secondNumber = (+this.showValue===0)?'':+this.showValue;
+          if (this.showValue) {
+            this.showValue = String(this.showValue);
+            if (!this.operationSign) {
+              this.showValue = this.showValue.substr(
+                0,
+                this.showValue.length - 1
+              );
+              this.firstNumber = +this.showValue === 0 ? "" : +this.showValue;
+            } else {
+              if (
+                this.showValue === "+" ||
+                this.showValue === "-" ||
+                this.showValue === "*" ||
+                this.showValue === "/" ||
+                this.showValue === "^"
+              ) {
+                this.showValue = this.showValue.substr(
+                  0,
+                  this.showValue.length - 1
+                );
+                this.operationSign = this.showValue;
+              } else {
+                this.showValue = this.showValue.substr(
+                  0,
+                  this.showValue.length - 1
+                );
+                this.secondNumber =
+                  +this.showValue === 0 ? "" : +this.showValue;
+              }
+            }
           }
-        }
-        
-      }
-       
-      console.log('this.showValue.length', this.showValue.length);
-      console.log('this.showValue', this.showValue);
-      
         }
       }
       const input = document.getElementsByTagName("input")[0];
@@ -228,21 +236,16 @@ class Buttons extends Component {
           value={this.showValue}
         ></input>
       );
-
-      console.log("first", this.firstNumber);
-      console.log("second", this.secondNumber);
-      console.log("operationSign", this.operationSign);
-      console.log('isEqualSign', this.isEqualSign);
     };
 
     return (
       <div className="panel">
-        <div>
-          {trickyInput}
-          <button onClick={() => handleClick('Del')}>Del</button>
+        <div className="input-panel">
+         {trickyInput}
+          <button className="del-btn operation-btn" onClick={() => handleClick("Del")}>Del</button>
           </div>
         
-         {memoryDisplay}
+        {memoryDisplay}
         <div className="calculator-grid">
           <button className="operation-btn" onClick={() => handleClick("C")}>
             C

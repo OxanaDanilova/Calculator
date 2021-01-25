@@ -20,12 +20,19 @@ button:hover {
 }
 
 input {
-    margin: 20px;
+    margin: 20px 0 20px 20px;
     height: 3rem;
     font-size: 2rem;
     padding: 0.3rem;
     border-radius:10px;
     text-align: center;
+}
+
+.input-panel {
+    width: 32rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }
 
 .memory-res {
@@ -50,6 +57,9 @@ input {
 
 .operation-btn {
     background-color:darkseagreen;
+}
+.del-btn {
+    height: 3.5rem;
 }
 
 .pow {
